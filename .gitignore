@@ -9,4 +9,6 @@ build/
 results/*
 !results/phase0/
 !results/phase0/**
+!results/phase0b_sensitivity/
+!results/phase0b_sensitivity/**
 models/

@@ -32,9 +32,11 @@ prompt
 - 실험 설계 문서: [docs/experiment-design.md](docs/experiment-design.md)
 - 시스템 구조 초안: [docs/architecture.md](docs/architecture.md)
 - 프로토콜 초안: [docs/protocol.md](docs/protocol.md)
+- Phase 0B 민감도 실험: [docs/phase0b-sensitivity.md](docs/phase0b-sensitivity.md)
 - Phase 1 실제 모델 계획: [docs/phase1-real-model-plan.md](docs/phase1-real-model-plan.md)
 - 첫 단계 시뮬레이터: [src/client_assisted_llm/simulate.py](src/client_assisted_llm/simulate.py)
 - Phase 0 sweep runner: [experiments/phase0_sweep.py](experiments/phase0_sweep.py)
+- Phase 0B sensitivity runner: [experiments/phase0_sensitivity.py](experiments/phase0_sensitivity.py)
 
 주의: 현재 시뮬레이터는 실제 transformer 연산을 재현하지 않는 낙관적 toy model입니다. 첫 목적은 "어떤 accept rate와 draft window에서 가능성이 생기는가"를 빠르게 감 잡는 것입니다.
 
@@ -66,6 +68,14 @@ results/phase0/latency_reduction.svg
 results/phase0/server_step_reduction.svg
 results/phase0/summary.md
 ```
+
+로컬 draft 속도와 네트워크 RTT 민감도를 보려면:
+
+```bash
+python3 experiments/phase0_sensitivity.py
+```
+
+결과는 기본적으로 `results/phase0b_sensitivity/`에 생성됩니다.
 
 ## 마일스톤
 
