@@ -1,85 +1,60 @@
 # Client-Assisted LLM Inference
 
-로컬 노트북 GPU/CPU가 클라우드 LLM 추론에 실제로 참여해서 서버 GPU 원가를 줄일 수 있는지 검증하는 실험 repo입니다.
+Client-assisted LLM inference prototype for testing whether a user's laptop can participate in cloud LLM generation and reduce server-side inference cost.
 
-## 핵심 아이디어
-
-기존 API는 사용자의 노트북을 단순 터미널처럼 씁니다.
-
-```text
-prompt -> cloud GPU -> response
-```
-
-이 프로젝트는 사용자의 로컬 모델이 먼저 draft token을 만들고, 서버의 큰 모델이 여러 draft token을 한 번에 검증하는 구조를 실험합니다.
+The project focuses on a practical version of the idea: the client runs a smaller local draft model, proposes token IDs, and the server-side verifier model accepts or rejects those draft tokens. If the verifier accepts enough of the local draft, the cloud server can reduce expensive autoregressive generation work.
 
 ```text
 prompt
-  -> local small model drafts tokens
-  -> cloud large model verifies draft tokens
-  -> accepted tokens reduce server autoregressive work
+  -> local draft model proposes token IDs
+  -> server verifier model checks the draft
+  -> accepted prefix is reused
+  -> server continues when the draft diverges
 ```
 
-이 방식은 client-side speculative decoding에 가깝습니다. OpenAI, Claude, Gemini 같은 기존 상용 API 비용을 직접 줄이는 방식이 아니라, 우리가 직접 운영하는 오픈소스 LLM 서버의 GPU 원가를 낮출 수 있는지 보는 실험입니다.
+This is related to speculative decoding, but with the draft model running on the user's machine instead of inside the same server process.
 
-## 첫 번째 목표
+## Why This Exists
 
-다음 문장이 참인지 측정합니다.
-
-> 로컬 작은 모델의 draft token이 서버 큰 모델에 충분히 많이 accept되면, 서버 GPU forward step과 latency를 줄일 수 있다.
-
-## 현재 포함된 것
-
-- 실험 설계 문서: [docs/experiment-design.md](docs/experiment-design.md)
-- 시스템 구조 초안: [docs/architecture.md](docs/architecture.md)
-- 프로토콜 초안: [docs/protocol.md](docs/protocol.md)
-- Phase 0B 민감도 실험: [docs/phase0b-sensitivity.md](docs/phase0b-sensitivity.md)
-- Phase 1 accept rate 측정: [docs/phase1-accept-rate.md](docs/phase1-accept-rate.md)
-- Phase 1 실제 결과: [docs/phase1-results.md](docs/phase1-results.md)
-- Phase 1 실제 모델 계획: [docs/phase1-real-model-plan.md](docs/phase1-real-model-plan.md)
-- 첫 단계 시뮬레이터: [src/client_assisted_llm/simulate.py](src/client_assisted_llm/simulate.py)
-- Phase 0 sweep runner: [experiments/phase0_sweep.py](experiments/phase0_sweep.py)
-- Phase 0B sensitivity runner: [experiments/phase0_sensitivity.py](experiments/phase0_sensitivity.py)
-
-주의: 현재 시뮬레이터는 실제 transformer 연산을 재현하지 않는 낙관적 toy model입니다. 첫 목적은 "어떤 accept rate와 draft window에서 가능성이 생기는가"를 빠르게 감 잡는 것입니다.
-
-## 빠른 실행
-
-Python 3.10 이상에서 실행합니다.
-
-```bash
-python3 -m src.client_assisted_llm.simulate --target-tokens 256 --draft-window 8 --accept-rate 0.65
-```
-
-여러 조건을 비교하려면:
-
-```bash
-python3 -m src.client_assisted_llm.simulate --sweep
-```
-
-CSV와 SVG 그래프를 파일로 남기려면:
-
-```bash
-python3 experiments/phase0_sweep.py
-```
-
-결과는 기본적으로 `results/phase0/`에 생성됩니다.
+Modern laptops have increasingly capable GPUs/NPUs, but most LLM APIs still treat the client as a thin terminal:
 
 ```text
-results/phase0/sweep.csv
-results/phase0/latency_reduction.svg
-results/phase0/server_step_reduction.svg
-results/phase0/summary.md
+client sends prompt -> cloud GPU does all generation -> client waits
 ```
 
-로컬 draft 속도와 네트워크 RTT 민감도를 보려면:
+This repo explores a different question:
 
-```bash
-python3 experiments/phase0_sensitivity.py
-```
+> Can client hardware do useful inference work during cloud generation, enough to reduce cloud GPU cost or latency?
 
-결과는 기본적으로 `results/phase0b_sensitivity/`에 생성됩니다.
+This is not a wrapper for OpenAI, Claude, or Gemini pricing. Existing closed APIs generally do not expose the token-verification primitives needed for this. The target is an open model stack where the client and server protocol can be controlled.
 
-실제 pretrained 모델로 accept rate를 재려면:
+## Current Status
+
+Real pretrained models have been tested. The first results are mixed but useful:
+
+| Run | Draft model | Verifier model | Weighted accept rate |
+| --- | --- | --- | ---: |
+| SmolLM2 smoke test | `HuggingFaceTB/SmolLM2-135M-Instruct` | `HuggingFaceTB/SmolLM2-360M-Instruct` | 35.3% |
+| Qwen raw prompt | `Qwen/Qwen2.5-0.5B-Instruct` | `Qwen/Qwen2.5-1.5B-Instruct` | 15.6% |
+| Qwen chat template | `Qwen/Qwen2.5-0.5B-Instruct` | `Qwen/Qwen2.5-1.5B-Instruct` | 18.9% |
+| Same-model sanity check | `SmolLM2-135M-Instruct` | `SmolLM2-135M-Instruct` | 100.0% |
+
+The same-model sanity check reaching 100% suggests the token comparison logic is working. The early cross-model accept rates are below the rough product target of 50%+, so the next research step is testing stronger draft/verifier pairs such as Qwen 1.5B -> 3B/7B, smaller draft windows, and task-specific prompt sets.
+
+Detailed results: [docs/phase1-results.md](docs/phase1-results.md)
+
+## Repository Map
+
+- [experiments/phase1_accept_rate.py](experiments/phase1_accept_rate.py): real-model accept-rate measurement
+- [docs/phase1-accept-rate.md](docs/phase1-accept-rate.md): how the Phase 1 measurement works
+- [docs/phase1-results.md](docs/phase1-results.md): current measured results
+- [docs/protocol.md](docs/protocol.md): draft token protocol sketch
+- [docs/architecture.md](docs/architecture.md): target client/server architecture
+- [docs/experiment-design.md](docs/experiment-design.md): overall experiment plan
+- [experiments/phase0_sweep.py](experiments/phase0_sweep.py): analytical sweep for accept rate and draft window
+- [experiments/phase0_sensitivity.py](experiments/phase0_sensitivity.py): sensitivity check for local speed and network RTT
+
+## Run Real-Model Accept Rate
 
 ```bash
 python3 -m venv .venv
@@ -88,19 +63,66 @@ python -m pip install -r requirements-phase1.txt
 python experiments/phase1_accept_rate.py
 ```
 
-## 마일스톤
+The default run uses:
 
-1. 시뮬레이션으로 draft window와 accept rate의 의미 이해
-2. 로컬 draft 모델 연결: Ollama 또는 llama.cpp
-3. 서버 verifier 연결: vLLM 기반 오픈소스 큰 모델
-4. 실제 prompt set으로 baseline vs assisted 비교
-5. 서버 GPU time, latency, accept rate, 품질을 기준으로 제품 가능성 판단
+- draft: `HuggingFaceTB/SmolLM2-135M-Instruct`
+- verifier: `HuggingFaceTB/SmolLM2-360M-Instruct`
+- prompts: [examples/prompts_ko.txt](examples/prompts_ko.txt)
+- output: `results/phase1_accept_rate/`
 
-## 성공 기준
+Example Qwen run:
 
-첫 실험에서는 아래 중 2개 이상을 만족하면 다음 단계로 갑니다.
+```bash
+python experiments/phase1_accept_rate.py \
+  --draft-model Qwen/Qwen2.5-0.5B-Instruct \
+  --verifier-model Qwen/Qwen2.5-1.5B-Instruct \
+  --limit 3 \
+  --draft-window 8 \
+  --max-new-tokens 24 \
+  --output-dir results/phase1_accept_rate_qwen_chat
+```
 
-- 서버 decode step 25% 이상 감소
-- end-to-end latency 15% 이상 감소
-- 품질 저하가 눈에 띄지 않음
-- accept rate 50% 이상 유지
+## Method
+
+For each prompt:
+
+1. The draft model greedily proposes `draft_window` token IDs.
+2. The verifier model runs on `context + draft_tokens`.
+3. Each draft token is compared against the verifier model's greedy top-1 token at that position.
+4. The accepted prefix is counted.
+5. On first mismatch, the verifier token is appended and the next draft window begins.
+
+The main metric is:
+
+```text
+accept_rate = accepted_draft_tokens / proposed_draft_tokens
+```
+
+## Early Takeaways
+
+- The measurement pipeline works: same-model verification gives 100% accept rate.
+- Very small draft models are probably too weak for reliable savings on the current Korean prompt set.
+- The idea becomes interesting when accept rate approaches 50%+ and the client/server RTT is low.
+- The next serious test should use a stronger same-family pair and compare draft windows 2, 4, and 8.
+
+## Analytical Experiments
+
+The Phase 0 scripts are not the main evidence; they are planning tools for understanding which variables matter.
+
+```bash
+python3 experiments/phase0_sweep.py
+python3 experiments/phase0_sensitivity.py
+```
+
+Generated artifacts:
+
+- `results/phase0/`
+- `results/phase0b_sensitivity/`
+
+## Next Steps
+
+1. Run Qwen 1.5B -> Qwen 3B or 7B accept-rate measurements.
+2. Sweep `draft_window` across 2, 4, and 8 for each model pair.
+3. Split prompts by category: Korean explanation, code, translation, summarization.
+4. Add server-only latency baseline for the verifier model.
+5. Convert the accept-rate measurement into a minimal client/server protocol demo.
