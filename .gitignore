@@ -13,4 +13,6 @@ results/*
 !results/phase0b_sensitivity/**
 !results/phase1*/
 !results/phase1*/**
+!results/phase1b*/
+!results/phase1b*/**
 models/

@@ -1,0 +1,66 @@
+{
+  "draft_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "verifier_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "device": "mps",
+  "max_new_tokens": 24,
+  "prompt_count": 3,
+  "use_chat_template": true,
+  "windows": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "best_draft_window": 1,
+  "best_weighted_accept_rate": 0.5909,
+  "rows": [
+    {
+      "draft_window": 1,
+      "prompt_count": 3,
+      "total_proposed_tokens": 66,
+      "total_accepted_tokens": 39,
+      "total_rejected_tokens": 27,
+      "total_windows": 66,
+      "weighted_accept_rate": 0.5909,
+      "mean_prompt_accept_rate": 0.5741,
+      "accepted_tokens_per_window": 0.5909,
+      "total_elapsed_s": 4.418
+    },
+    {
+      "draft_window": 2,
+      "prompt_count": 3,
+      "total_proposed_tokens": 86,
+      "total_accepted_tokens": 39,
+      "total_rejected_tokens": 47,
+      "total_windows": 44,
+      "weighted_accept_rate": 0.4535,
+      "mean_prompt_accept_rate": 0.4545,
+      "accepted_tokens_per_window": 0.8864,
+      "total_elapsed_s": 2.971
+    },
+    {
+      "draft_window": 4,
+      "prompt_count": 3,
+      "total_proposed_tokens": 131,
+      "total_accepted_tokens": 39,
+      "total_rejected_tokens": 92,
+      "total_windows": 35,
+      "weighted_accept_rate": 0.2977,
+      "mean_prompt_accept_rate": 0.3152,
+      "accepted_tokens_per_window": 1.1143,
+      "total_elapsed_s": 3.231
+    },
+    {
+      "draft_window": 8,
+      "prompt_count": 3,
+      "total_proposed_tokens": 206,
+      "total_accepted_tokens": 39,
+      "total_rejected_tokens": 167,
+      "total_windows": 29,
+      "weighted_accept_rate": 0.1893,
+      "mean_prompt_accept_rate": 0.2134,
+      "accepted_tokens_per_window": 1.3448,
+      "total_elapsed_s": 4.069
+    }
+  ]
+}

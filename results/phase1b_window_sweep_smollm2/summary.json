@@ -1,0 +1,66 @@
+{
+  "draft_model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+  "verifier_model": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "device": "mps",
+  "max_new_tokens": 32,
+  "prompt_count": 5,
+  "use_chat_template": true,
+  "windows": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "best_draft_window": 1,
+  "best_weighted_accept_rate": 0.7625,
+  "rows": [
+    {
+      "draft_window": 1,
+      "prompt_count": 5,
+      "total_proposed_tokens": 160,
+      "total_accepted_tokens": 122,
+      "total_rejected_tokens": 38,
+      "total_windows": 160,
+      "weighted_accept_rate": 0.7625,
+      "mean_prompt_accept_rate": 0.7625,
+      "accepted_tokens_per_window": 0.7625,
+      "total_elapsed_s": 10.211
+    },
+    {
+      "draft_window": 2,
+      "prompt_count": 5,
+      "total_proposed_tokens": 182,
+      "total_accepted_tokens": 122,
+      "total_rejected_tokens": 60,
+      "total_windows": 92,
+      "weighted_accept_rate": 0.6703,
+      "mean_prompt_accept_rate": 0.6734,
+      "accepted_tokens_per_window": 1.3261,
+      "total_elapsed_s": 5.637
+    },
+    {
+      "draft_window": 4,
+      "prompt_count": 5,
+      "total_proposed_tokens": 236,
+      "total_accepted_tokens": 122,
+      "total_rejected_tokens": 114,
+      "total_windows": 61,
+      "weighted_accept_rate": 0.5169,
+      "mean_prompt_accept_rate": 0.5258,
+      "accepted_tokens_per_window": 2.0,
+      "total_elapsed_s": 5.109
+    },
+    {
+      "draft_window": 8,
+      "prompt_count": 5,
+      "total_proposed_tokens": 359,
+      "total_accepted_tokens": 122,
+      "total_rejected_tokens": 237,
+      "total_windows": 47,
+      "weighted_accept_rate": 0.3398,
+      "mean_prompt_accept_rate": 0.37,
+      "accepted_tokens_per_window": 2.5957,
+      "total_elapsed_s": 6.315
+    }
+  ]
+}
