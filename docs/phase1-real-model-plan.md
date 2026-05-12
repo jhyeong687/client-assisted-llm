@@ -1,6 +1,6 @@
 # Phase 1 Real Model Plan
 
-Phase 1의 목표는 실제 작은 로컬 모델과 큰 서버 모델을 붙이기 전에, 가장 중요한 숫자인 accept rate를 측정하는 것입니다.
+Phase 1의 목표는 실제 작은 로컬 모델과 큰 서버 모델을 붙이기 전에, 가장 중요한 숫자인 accept rate를 측정하는 것이다.
 
 ## 핵심 질문
 
@@ -8,7 +8,7 @@ Phase 1의 목표는 실제 작은 로컬 모델과 큰 서버 모델을 붙이�
 
 ## 추천 모델 조합
 
-첫 실험에서는 같은 계열 모델을 씁니다. tokenizer와 분포가 비슷해야 draft token이 accept될 가능성이 큽니다.
+첫 실험에서는 같은 계열 모델을 쓴다. tokenizer와 분포가 비슷해야 draft token이 accept될 가능성이 크다.
 
 | Local draft model | Server verifier model | 이유 |
 | --- | --- | --- |
@@ -18,7 +18,7 @@ Phase 1의 목표는 실제 작은 로컬 모델과 큰 서버 모델을 붙이�
 
 ## 1차 구현 범위
 
-완성형 streaming API를 만들지 않습니다. 먼저 accept rate 측정기만 만듭니다.
+완성형 streaming API를 만들지 않는다. 먼저 accept rate 측정기만 만든다.
 
 ```text
 prompt
@@ -51,14 +51,14 @@ prompt
 
 ## 중요 구현 원칙
 
-- text similarity가 아니라 token id equality를 봅니다.
-- local model과 server model은 가능한 같은 tokenizer를 씁니다.
-- 서버는 클라이언트 draft를 신뢰하지 않고 항상 검증합니다.
-- mismatch가 나면 accepted prefix까지만 인정합니다.
+- text similarity가 아니라 token id equality를 본다.
+- local model과 server model은 가능한 같은 tokenizer를 쓴다.
+- 서버는 클라이언트 draft를 신뢰하지 않고 항상 검증한다.
+- mismatch가 나면 accepted prefix까지만 인정한다.
 
 ## 최소 성공 기준
 
-다음 중 2개 이상이면 Phase 2로 갑니다.
+다음 중 2개 이상이면 Phase 2로 간다.
 
 - 평균 accept rate 50% 이상
 - 쉬운 프롬프트에서 accept rate 65% 이상

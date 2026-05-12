@@ -1,6 +1,6 @@
 # Draft Protocol v0
 
-이 문서는 client-assisted inference를 위한 최소 프로토콜 초안입니다.
+이 문서는 client-assisted inference를 위한 최소 프로토콜 초안이다.
 
 ## Request
 
@@ -35,10 +35,10 @@
 
 ## 중요한 원칙
 
-- 서버는 클라이언트 draft를 신뢰하지 않고 항상 검증합니다.
-- 클라이언트와 서버는 같은 tokenizer를 써야 합니다.
-- 서버는 accepted prefix만 채택합니다.
-- mismatch 이후에는 서버가 정답 token을 생성하거나 새 draft window를 요청합니다.
+- 서버는 클라이언트 draft를 신뢰하지 않고 항상 검증한다.
+- 클라이언트와 서버는 같은 tokenizer를 써야 한다.
+- 서버는 accepted prefix만 채택한다.
+- mismatch 이후에는 서버가 정답 token을 생성하거나 새 draft window를 요청한다.
 
 ## MVP에서는 생략할 것
 

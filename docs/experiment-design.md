@@ -59,7 +59,7 @@
 
 ## 프롬프트 세트
 
-처음에는 20개 정도면 충분합니다.
+처음에는 20개 정도면 충분하다.
 
 - 짧은 한국어 설명 질문
 - 긴 문서 요약
@@ -72,7 +72,7 @@
 
 ## 1차 성공 기준
 
-다음 중 2개 이상을 만족하면 구현을 계속합니다.
+다음 중 2개 이상을 만족하면 구현을 계속한다.
 
 - server-only 대비 서버 decode step 25% 이상 감소
 - end-to-end latency 15% 이상 감소
@@ -81,7 +81,7 @@
 
 ## 1차 실패 기준
 
-다음 중 하나라도 강하면 방향을 바꿉니다.
+다음 중 하나라도 강하면 방향을 바꾼다.
 
 - accept rate가 대부분 30% 이하
 - 네트워크 왕복 때문에 latency가 더 느림
@@ -92,13 +92,13 @@
 
 ### Phase 0: 시뮬레이션
 
-실제 모델 없이 accept rate, draft window, 네트워크 지연이 이론적으로 어떤 영향을 주는지 확인합니다.
+실제 모델 없이 accept rate, draft window, 네트워크 지연이 이론적으로 어떤 영향을 주는지 확인한다.
 
-이 단계의 시뮬레이션은 실제 transformer verifier 비용을 정확히 모델링하지 않습니다. 낙관적인 toy model로 보고, 다음 단계에서 실제 GPU 측정으로 반드시 교정합니다.
+이 단계의 시뮬레이션은 실제 transformer verifier 비용을 정확히 모델링하지 않는다. 낙관적인 toy model로 보고, 다음 단계에서 실제 GPU 측정으로 반드시 교정한다.
 
 ### Phase 1: 로컬 draft
 
-Ollama 또는 llama.cpp로 작은 모델을 붙입니다.
+Ollama 또는 llama.cpp로 작은 모델을 붙인다.
 
 추천 후보:
 
@@ -108,7 +108,7 @@ Ollama 또는 llama.cpp로 작은 모델을 붙입니다.
 
 ### Phase 2: 서버 verifier
 
-vLLM 또는 llama.cpp server로 큰 모델을 붙입니다.
+vLLM 또는 llama.cpp server로 큰 모델을 붙인다.
 
 추천 후보:
 
@@ -118,8 +118,8 @@ vLLM 또는 llama.cpp server로 큰 모델을 붙입니다.
 
 ### Phase 3: 실제 speculative decoding
 
-draft token ids를 서버로 보내고 서버가 accept/reject합니다.
+draft token ids를 서버로 보내고 서버가 accept/reject한다.
 
 ### Phase 4: 제품 판단
 
-서버 원가 절감이 분명하면 SDK, 로컬 앱, 서버 API 형태로 확장합니다.
+서버 원가 절감이 분명하면 SDK, 로컬 앱, 서버 API 형태로 확장한다.

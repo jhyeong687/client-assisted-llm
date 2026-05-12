@@ -42,15 +42,15 @@
 
 ## 왜 기존 상용 API 위에서는 어렵나
 
-상용 LLM API는 내부 logits, KV cache, layer activation, token verification primitive를 공개하지 않습니다. 사용자는 prompt를 보내고 text/token stream을 받을 뿐입니다.
+상용 LLM API는 내부 logits, KV cache, layer activation, token verification primitive를 공개하지 않는다. 사용자는 prompt를 보내고 text/token stream을 받을 뿐이다.
 
-따라서 이 프로젝트의 절감 대상은 OpenAI 같은 외부 API 요금이 아니라, 우리가 직접 운영하는 서버의 GPU 원가입니다.
+따라서 이 프로젝트의 절감 대상은 OpenAI 같은 외부 API 요금이 아니라, 우리가 직접 운영하는 서버의 GPU 원가이다.
 
 ## 제품화 가능한 형태
 
 ### SDK
 
-개발자가 앱에 붙이는 클라이언트 라이브러리입니다.
+개발자가 앱에 붙이는 클라이언트 라이브러리이다.
 
 ```python
 client = AssistedLLM(local_model="qwen2.5:3b", server_url="https://api.example.com")
@@ -59,7 +59,7 @@ response = client.generate("한국어로 speculative decoding 설명해줘")
 
 ### Local companion app
 
-사용자 노트북에서 로컬 draft 모델을 관리합니다.
+사용자 노트북에서 로컬 draft 모델을 관리한다.
 
 - 모델 다운로드
 - GPU/NPU 사용량 확인
@@ -68,7 +68,7 @@ response = client.generate("한국어로 speculative decoding 설명해줘")
 
 ### Cloud verifier API
 
-우리가 운영하는 서버 API입니다.
+우리가 운영하는 서버 API이다.
 
 - draft token 검증
 - fallback generation
@@ -77,9 +77,9 @@ response = client.generate("한국어로 speculative decoding 설명해줘")
 
 ## 가장 큰 리스크
 
-- 로컬 모델과 서버 모델의 tokenizer가 다르면 구현이 복잡해집니다.
-- draft accept rate가 낮으면 이득이 없습니다.
-- 네트워크 지연이 큰 환경에서는 latency 이득이 줄어듭니다.
-- 클라이언트 GPU가 느리면 서버가 기다리는 시간이 생깁니다.
-- 보안상 클라이언트가 조작한 draft를 서버가 신뢰하면 안 됩니다.
+- 로컬 모델과 서버 모델의 tokenizer가 다르면 구현이 복잡해진다.
+- draft accept rate가 낮으면 이득이 없다.
+- 네트워크 지연이 큰 환경에서는 latency 이득이 줄어든다.
+- 클라이언트 GPU가 느리면 서버가 기다리는 시간이 생긴다.
+- 보안상 클라이언트가 조작한 draft를 서버가 신뢰하면 안 된다.
 
