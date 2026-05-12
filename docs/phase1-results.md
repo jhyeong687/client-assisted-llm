@@ -22,6 +22,17 @@ Phase 1B tested whether `draft_window=8` was causing excess rejection waste. The
 
 This is the strongest positive signal so far. The cross-model accept rate can exceed 50% when the draft window is small. However, smaller windows increase verification round trips, so latency and network RTT still matter.
 
+## Phase 1C Adaptive Draft Window
+
+Phase 1C starts at window 1, doubles the window when the whole draft is accepted, and halves it on mismatch.
+
+| Model pair | Adaptive accept rate | Accepted tokens/window | Elapsed |
+| --- | ---: | ---: | ---: |
+| SmolLM2 135M -> 360M | 55.2% | 1.49 | 7.52s |
+| Qwen 0.5B -> 1.5B chat | 52.7% | 0.87 | 4.12s |
+
+The simple adaptive policy is not better than fixed window 1 on raw accept rate, but it reduces some rejection waste compared with window 8 and begins to explore the latency/accept-rate tradeoff. A better next policy should be latency-aware, not only accept-rate-aware.
+
 ## Read
 
 The measurement code appears directionally correct because the same-model sanity check reaches 100% accept rate.
@@ -52,3 +63,5 @@ Likely next tests:
 - `results/phase1_accept_rate_sanity_same_model/`
 - `results/phase1b_window_sweep_smollm2/`
 - `results/phase1b_window_sweep_qwen_chat/`
+- `results/phase1c_adaptive_window_smollm2/`
+- `results/phase1c_adaptive_window_qwen_chat/`

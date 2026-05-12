@@ -1,0 +1,18 @@
+{
+  "draft_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "verifier_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "device": "mps",
+  "min_window": 1,
+  "max_window": 8,
+  "max_new_tokens": 24,
+  "use_chat_template": true,
+  "prompt_count": 3,
+  "total_proposed_tokens": 74,
+  "total_accepted_tokens": 39,
+  "total_rejected_tokens": 35,
+  "total_windows": 45,
+  "weighted_accept_rate": 0.527,
+  "mean_prompt_accept_rate": 0.5117,
+  "accepted_tokens_per_window": 0.8667,
+  "total_elapsed_s": 4.121
+}

@@ -1,0 +1,14 @@
+prompt_id,generated_tokens,proposed_tokens,accepted_tokens,rejected_tokens,windows,accept_rate,accepted_tokens_per_window,elapsed_s,window_trace,prompt,output_text
+1,32,45,21,24,21,0.4667,1.0,1.734,1:0/1 1:1/1 2:2/2 4:1/4 2:2/2 4:1/4 2:0/2 1:1/1 2:0/2 1:1/1 2:1/2 1:1/1 2:0/2 1:0/1 1:1/1 2:2/2 4:0/4 2:2/2 4:0/4 2:2/2 4:3/4,LLM에서 speculative decoding이 뭔지 비전공자에게 설명해줘.,Speculative decoding is a process used in cryptography to create a decryption key based on a given message. It involves analyzing the structure of the message and using that
+2,32,49,28,21,11,0.5714,2.5455,1.546,1:1/1 2:2/2 4:4/4 8:0/8 4:4/4 8:0/8 4:1/4 2:2/2 4:4/4 8:6/8 4:4/4,한국어 이메일을 더 정중하게 다듬어줘: 내일까지 자료 보내주세요.,아래와 같이 이메일을 다듬어
+3,32,44,24,20,17,0.5455,1.4118,1.483,1:0/1 1:0/1 1:1/1 2:2/2 4:4/4 8:1/8 4:2/4 2:1/2 1:1/1 2:2/2 4:0/4 2:2/2 4:1/4 2:1/2 1:1/1 2:2/2 3:3/3,Python으로 간단한 TODO CLI를 만들어줘.,"만들어요.
+
+```python
+import argparse
+
+def get_args():
+    parser = argparse."
+4,32,43,23,20,19,0.5349,1.2105,1.426,1:0/1 1:1/1 2:0/2 1:1/1 2:2/2 4:4/4 8:3/8 4:0/4 2:1/2 1:1/1 2:2/2 4:2/4 2:0/2 1:0/1 1:1/1 2:0/2 1:1/1 2:2/2 2:2/2,긴 회의록을 핵심 결정사항과 액션아이템으로 요약해줘.,"액션아이템을 요약하고, 긴 �"
+5,32,40,26,14,14,0.65,1.8571,1.333,1:0/1 1:0/1 1:1/1 2:2/2 4:1/4 2:2/2 4:4/4 8:5/8 4:0/4 2:0/2 1:1/1 2:2/2 4:4/4 4:4/4,왜 기존 OpenAI API 위에서는 사용자 GPU로 비용 절감이 어려운지 설명해줘.,"아래 코드에서 알려줘:
+
+```python"

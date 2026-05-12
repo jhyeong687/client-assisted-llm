@@ -30,14 +30,21 @@ client가 prompt 전송 -> cloud GPU가 전부 생성 -> client는 기다림
 
 ## 현재 결과
 
-실제 pretrained 모델로 accept rate를 측정했습니다. 가장 중요한 최신 결과는 `draft_window`가 작을수록 accept rate가 크게 올라간다는 점입니다.
+실제 pretrained 모델로 accept rate를 측정했습니다. 가장 중요한 결과는 `draft_window`가 작을수록 accept rate가 크게 올라가고, adaptive window가 그 중간 균형점을 만들 수 있다는 점입니다.
 
 | 모델 조합 | window 1 | window 2 | window 4 | window 8 |
 | --- | ---: | ---: | ---: | ---: |
 | SmolLM2 135M -> 360M | 76.2% | 67.0% | 51.7% | 34.0% |
 | Qwen2.5 0.5B -> 1.5B chat | 59.1% | 45.4% | 29.8% | 18.9% |
 
-이전 `draft_window=8` 기준 결과만 보면 신호가 약해 보였지만, window sweep 이후에는 아이디어가 더 살아났습니다. 특히 window 1에서는 두 cross-model 조합 모두 50%를 넘었습니다.
+Adaptive window 결과:
+
+| 모델 조합 | adaptive accept rate | accepted tokens/window |
+| --- | ---: | ---: |
+| SmolLM2 135M -> 360M | 55.2% | 1.49 |
+| Qwen2.5 0.5B -> 1.5B chat | 52.7% | 0.87 |
+
+이전 `draft_window=8` 기준 결과만 보면 신호가 약해 보였지만, window sweep과 adaptive window 이후에는 아이디어가 더 살아났습니다. 특히 window 1에서는 두 cross-model 조합 모두 50%를 넘었고, adaptive 정책도 50% 이상을 유지했습니다.
 
 다만 window가 작아지면 서버 검증 round trip이 늘어납니다. 따라서 실제 제품에서는 accept rate만 볼 것이 아니라 latency, 네트워크 RTT, verifier batch 효율까지 같이 봐야 합니다.
 
@@ -53,9 +60,11 @@ client가 prompt 전송 -> cloud GPU가 전부 생성 -> client는 기다림
 
 - [experiments/phase1_accept_rate.py](experiments/phase1_accept_rate.py): 실제 모델 accept rate 측정기
 - [experiments/phase1b_window_sweep.py](experiments/phase1b_window_sweep.py): draft window sweep 실험
+- [experiments/phase1c_adaptive_window.py](experiments/phase1c_adaptive_window.py): adaptive draft window 실험
 - [docs/phase1-results.md](docs/phase1-results.md): 현재 실제 모델 결과
 - [docs/phase1-accept-rate.md](docs/phase1-accept-rate.md): Phase 1 측정 방식
 - [docs/phase1b-window-sweep.md](docs/phase1b-window-sweep.md): Phase 1B 실험 설명
+- [docs/phase1c-adaptive-window.md](docs/phase1c-adaptive-window.md): Phase 1C 실험 설명
 - [docs/protocol.md](docs/protocol.md): draft token 프로토콜 초안
 - [docs/architecture.md](docs/architecture.md): 목표 client/server 구조
 - [docs/experiment-design.md](docs/experiment-design.md): 전체 실험 설계
@@ -82,6 +91,12 @@ Draft window sweep:
 
 ```bash
 python experiments/phase1b_window_sweep.py
+```
+
+Adaptive draft window:
+
+```bash
+python experiments/phase1c_adaptive_window.py
 ```
 
 Qwen 조합 window sweep:
@@ -118,6 +133,7 @@ accept_rate = accepted_draft_tokens / proposed_draft_tokens
 - `draft_window=8`은 작은 draft model에 너무 공격적일 수 있습니다.
 - window 1~2에서는 cross-model accept rate가 의미 있게 올라갑니다.
 - 하지만 작은 window는 검증 왕복 횟수를 늘리므로, 실제 제품은 adaptive window가 필요할 가능성이 큽니다.
+- 첫 adaptive 정책은 두 모델 조합 모두 50% 이상의 accept rate를 유지했습니다.
 - 다음 핵심 실험은 Qwen 1.5B -> 3B/7B, 그리고 window 1/2/4/8 비교입니다.
 
 ## 분석용 실험
@@ -140,4 +156,4 @@ python3 experiments/phase0_sensitivity.py
 2. window 1/2/4/8 비교를 더 큰 모델 조합에 반복
 3. prompt를 번역, 코드, 요약, 한국어 설명으로 분리
 4. verifier server-only latency baseline 추가
-5. accept streak에 따라 window를 키우고 줄이는 adaptive draft window 구현
+5. adaptive draft window 정책을 latency-aware 방식으로 개선
