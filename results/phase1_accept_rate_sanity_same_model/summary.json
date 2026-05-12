@@ -1,0 +1,16 @@
+{
+  "draft_model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+  "verifier_model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+  "device": "mps",
+  "draft_window": 8,
+  "max_new_tokens": 24,
+  "use_chat_template": true,
+  "prompts": "examples/prompts_ko.txt",
+  "limit": 2,
+  "prompt_count": 2,
+  "total_proposed_tokens": 48,
+  "total_accepted_tokens": 48,
+  "weighted_accept_rate": 1.0,
+  "mean_prompt_accept_rate": 1.0,
+  "total_elapsed_s": 1.386
+}

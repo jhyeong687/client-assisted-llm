@@ -1,0 +1,24 @@
+prompt_id,generated_tokens,proposed_tokens,accepted_tokens,rejected_tokens,windows,accept_rate,elapsed_s,prompt,output_text
+1,32,85,23,62,11,0.2706,1.786,LLM에서 speculative decoding이 뭔지 비전공자에게 설명해줘.,"
+
+예제 예:
+
+예제 예:
+
+예제"
+2,32,88,21,67,12,0.2386,2.031,한국어 이메일을 더 정중하게 다듬어줘: 내일까지 자료 보내주세요.,"
+
+제 20년 1월 일시 이번에�"
+3,32,50,26,24,8,0.52,1.167,Python으로 간단한 TODO CLI를 만들어줘.,"
+
+```python
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description='파일 읽어"
+4,32,57,26,31,8,0.4561,1.285,긴 회의록을 핵심 결정사항과 액션아이템으로 요약해줘.,"
+
+제안자는 이번에서 제안"
+5,32,63,25,38,8,0.3968,1.312,왜 기존 OpenAI API 위에서는 사용자 GPU로 비용 절감이 어려운지 설명해줘.,"
+
+아래 코드에서 OpenAI API 위에서"

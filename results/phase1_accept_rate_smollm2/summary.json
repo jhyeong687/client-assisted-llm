@@ -1,0 +1,15 @@
+{
+  "draft_model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+  "verifier_model": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "device": "mps",
+  "draft_window": 8,
+  "max_new_tokens": 32,
+  "prompts": "examples/prompts_ko.txt",
+  "limit": 5,
+  "prompt_count": 5,
+  "total_proposed_tokens": 343,
+  "total_accepted_tokens": 121,
+  "weighted_accept_rate": 0.3528,
+  "mean_prompt_accept_rate": 0.3764,
+  "total_elapsed_s": 7.581
+}

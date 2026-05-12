@@ -1,0 +1,6 @@
+prompt_id,generated_tokens,proposed_tokens,accepted_tokens,rejected_tokens,windows,accept_rate,elapsed_s,prompt,output_text
+1,24,91,11,80,13,0.1209,5.777,LLM에서 speculative decoding이 뭔지 비전공자에게 설명해줘., 그리고 그에 따른 문제 해결 방법을 제안해줘. LLM에서 speculative decoding은 LLM이 특정 문
+2,24,62,17,45,8,0.2742,1.58,한국어 이메일을 더 정중하게 다듬어줘: 내일까지 자료 보내주세요., 감사합니다. 이메일은 한국어로만 작성되어야 합니다. 감사합니다. 이메일
+3,24,97,11,86,13,0.1134,3.091,Python으로 간단한 TODO CLI를 만들어줘.," 
+- add, remove, list, quit 명령어를 지원해야 합니다.
+- add 명령어는 새로운"

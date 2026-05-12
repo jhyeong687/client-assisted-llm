@@ -1,0 +1,15 @@
+{
+  "draft_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "verifier_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "device": "mps",
+  "draft_window": 8,
+  "max_new_tokens": 24,
+  "prompts": "examples/prompts_ko.txt",
+  "limit": 3,
+  "prompt_count": 3,
+  "total_proposed_tokens": 250,
+  "total_accepted_tokens": 39,
+  "weighted_accept_rate": 0.156,
+  "mean_prompt_accept_rate": 0.1695,
+  "total_elapsed_s": 10.448
+}

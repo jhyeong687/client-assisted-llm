@@ -1,0 +1,3 @@
+prompt_id,generated_tokens,proposed_tokens,accepted_tokens,rejected_tokens,windows,accept_rate,elapsed_s,prompt,output_text
+1,24,24,24,0,3,1.0,0.675,LLM에서 speculative decoding이 뭔지 비전공자에게 설명해줘.,LLM에서 speculative decoding is a fascinating area of speculative fiction that has garnered significant attention in recent
+2,24,24,24,0,3,1.0,0.711,한국어 이메일을 더 정중하게 다듬어줘: 내일까지 자료 보내주세요.,아래에서는 이메일�

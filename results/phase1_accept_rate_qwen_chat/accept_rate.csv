@@ -1,0 +1,4 @@
+prompt_id,generated_tokens,proposed_tokens,accepted_tokens,rejected_tokens,windows,accept_rate,elapsed_s,prompt,output_text
+1,24,74,15,59,10,0.2027,2.488,LLM에서 speculative decoding이 뭔지 비전공자에게 설명해줘.,"LLM에서 ""speculative decoding""는 랜덤한 예측을 하는 것을 의미합니다. 이는"
+2,18,84,7,77,12,0.0833,2.002,한국어 이메일을 더 정중하게 다듬어줘: 내일까지 자료 보내주세요.,"""이하루 남았습니다. 자료를 내일까지 보내주세요."""
+3,24,48,17,31,7,0.3542,1.031,Python으로 간단한 TODO CLI를 만들어줘.,물론입니다! Python으로 간단한 TODO CLI를 만드는 것은 매우 쉽습니다. 아래는 �

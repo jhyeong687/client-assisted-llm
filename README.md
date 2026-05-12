@@ -33,6 +33,8 @@ prompt
 - 시스템 구조 초안: [docs/architecture.md](docs/architecture.md)
 - 프로토콜 초안: [docs/protocol.md](docs/protocol.md)
 - Phase 0B 민감도 실험: [docs/phase0b-sensitivity.md](docs/phase0b-sensitivity.md)
+- Phase 1 accept rate 측정: [docs/phase1-accept-rate.md](docs/phase1-accept-rate.md)
+- Phase 1 실제 결과: [docs/phase1-results.md](docs/phase1-results.md)
 - Phase 1 실제 모델 계획: [docs/phase1-real-model-plan.md](docs/phase1-real-model-plan.md)
 - 첫 단계 시뮬레이터: [src/client_assisted_llm/simulate.py](src/client_assisted_llm/simulate.py)
 - Phase 0 sweep runner: [experiments/phase0_sweep.py](experiments/phase0_sweep.py)
@@ -76,6 +78,15 @@ python3 experiments/phase0_sensitivity.py
 ```
 
 결과는 기본적으로 `results/phase0b_sensitivity/`에 생성됩니다.
+
+실제 pretrained 모델로 accept rate를 재려면:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-phase1.txt
+python experiments/phase1_accept_rate.py
+```
 
 ## 마일스톤
 
