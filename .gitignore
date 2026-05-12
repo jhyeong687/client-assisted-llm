@@ -17,4 +17,6 @@ results/*
 !results/phase1b*/**
 !results/phase1c*/
 !results/phase1c*/**
+!results/phase2a*/
+!results/phase2a*/**
 models/

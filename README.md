@@ -30,6 +30,27 @@ client가 prompt 전송 -> cloud GPU가 전부 생성 -> client는 기다림
 
 ## 현재 결과
 
+### Latency benchmark
+
+Phase 2A에서 server-only baseline과 assisted generation latency를 비교했다. 현재 naive assisted 구현은 server-only보다 느리다.
+
+| 모델 조합 | best assisted | RTT 0ms speedup | RTT 15ms speedup | RTT 60ms speedup |
+| --- | --- | ---: | ---: | ---: |
+| SmolLM2 135M -> 360M | adaptive | 0.59x | 0.48x | 0.30x |
+| Qwen2.5 0.5B -> 1.5B chat | adaptive | 0.69x | 0.55x | 0.34x |
+
+이 결과는 중요한 현실 체크이다. accept rate는 50% 이상까지 올라왔지만, 현재 구현은 draft generation과 verifier check를 순차로 반복한다. 이 overhead 때문에 짧은 generation에서는 server-only를 이기지 못한다.
+
+제품화하려면 다음 중 하나가 필요하다.
+
+- verifier 서버에서 여러 draft token 검증을 더 효율적으로 처리
+- draft generation과 server verification의 overlap
+- 더 긴 generation에서 amortization 확인
+- 더 강한 draft model로 더 큰 window에서도 높은 accept rate 유지
+- 실제 서버 GPU cost 기준 측정
+
+### Accept rate
+
 실제 pretrained 모델로 accept rate를 측정했다. 가장 중요한 결과는 `draft_window`가 작을수록 accept rate가 크게 올라가고, adaptive window가 그 중간 균형점을 만들 수 있다는 점이다.
 
 | 모델 조합 | window 1 | window 2 | window 4 | window 8 |
@@ -61,10 +82,12 @@ Adaptive window 결과:
 - [experiments/phase1_accept_rate.py](experiments/phase1_accept_rate.py): 실제 모델 accept rate 측정기
 - [experiments/phase1b_window_sweep.py](experiments/phase1b_window_sweep.py): draft window sweep 실험
 - [experiments/phase1c_adaptive_window.py](experiments/phase1c_adaptive_window.py): adaptive draft window 실험
+- [experiments/phase2a_latency_benchmark.py](experiments/phase2a_latency_benchmark.py): server-only vs assisted latency benchmark
 - [docs/phase1-results.md](docs/phase1-results.md): 현재 실제 모델 결과
 - [docs/phase1-accept-rate.md](docs/phase1-accept-rate.md): Phase 1 측정 방식
 - [docs/phase1b-window-sweep.md](docs/phase1b-window-sweep.md): Phase 1B 실험 설명
 - [docs/phase1c-adaptive-window.md](docs/phase1c-adaptive-window.md): Phase 1C 실험 설명
+- [docs/phase2a-latency-benchmark.md](docs/phase2a-latency-benchmark.md): Phase 2A latency 실험 설명
 - [docs/protocol.md](docs/protocol.md): draft token 프로토콜 초안
 - [docs/architecture.md](docs/architecture.md): 목표 client/server 구조
 - [docs/experiment-design.md](docs/experiment-design.md): 전체 실험 설계
@@ -97,6 +120,12 @@ Adaptive draft window:
 
 ```bash
 python experiments/phase1c_adaptive_window.py
+```
+
+Server-only vs assisted latency:
+
+```bash
+python experiments/phase2a_latency_benchmark.py
 ```
 
 Qwen 조합 window sweep:
@@ -134,7 +163,8 @@ accept_rate = accepted_draft_tokens / proposed_draft_tokens
 - window 1~2에서는 cross-model accept rate가 의미 있게 올라간다.
 - 하지만 작은 window는 검증 왕복 횟수를 늘리므로, 실제 제품은 adaptive window가 필요할 가능성이 크다.
 - 첫 adaptive 정책은 두 모델 조합 모두 50% 이상의 accept rate를 유지했다.
-- 다음 핵심 실험은 Qwen 1.5B -> 3B/7B, 그리고 window 1/2/4/8 비교이다.
+- 현재 naive latency benchmark에서는 assisted 방식이 server-only보다 느리다.
+- 다음 핵심 실험은 더 긴 generation, Qwen 1.5B -> 3B/7B, latency-aware adaptive policy이다.
 
 ## 분석용 실험
 
@@ -152,8 +182,8 @@ python3 experiments/phase0_sensitivity.py
 
 ## 다음 단계
 
-1. Qwen 1.5B -> Qwen 3B 또는 7B accept rate 측정
-2. window 1/2/4/8 비교를 더 큰 모델 조합에 반복
-3. prompt를 번역, 코드, 요약, 한국어 설명으로 분리
-4. verifier server-only latency baseline 추가
+1. 더 긴 generation 길이에서 server-only vs assisted latency 재측정
+2. Qwen 1.5B -> Qwen 3B 또는 7B accept rate 측정
+3. window 1/2/4/8 비교를 더 큰 모델 조합에 반복
+4. prompt를 번역, 코드, 요약, 한국어 설명으로 분리
 5. adaptive draft window 정책을 latency-aware 방식으로 개선

@@ -33,6 +33,17 @@ Phase 1C starts at window 1, doubles the window when the whole draft is accepted
 
 The simple adaptive policy is not better than fixed window 1 on raw accept rate, but it reduces some rejection waste compared with window 8 and begins to explore the latency/accept-rate tradeoff. A better next policy should be latency-aware, not only accept-rate-aware.
 
+## Phase 2A Latency Benchmark
+
+Phase 2A compares server-only generation against fixed-window and adaptive assisted generation. The current naive assisted path does not beat server-only latency.
+
+| Model pair | Best assisted strategy | RTT 0ms speedup | RTT 15ms speedup | RTT 60ms speedup |
+| --- | --- | ---: | ---: | ---: |
+| SmolLM2 135M -> 360M | adaptive | 0.59x | 0.48x | 0.30x |
+| Qwen 0.5B -> 1.5B chat | adaptive | 0.69x | 0.55x | 0.34x |
+
+Read: accept rate alone is not enough. The prototype repeatedly runs draft generation and verifier forward passes, so short generations pay too much orchestration overhead. The next benchmark should test longer outputs and a latency-aware policy.
+
 ## Read
 
 The measurement code appears directionally correct because the same-model sanity check reaches 100% accept rate.
@@ -65,3 +76,5 @@ Likely next tests:
 - `results/phase1b_window_sweep_qwen_chat/`
 - `results/phase1c_adaptive_window_smollm2/`
 - `results/phase1c_adaptive_window_qwen_chat/`
+- `results/phase2a_latency_smollm2/`
+- `results/phase2a_latency_qwen_chat/`
