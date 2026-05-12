@@ -1,0 +1,10 @@
+[project]
+name = "client-assisted-llm"
+version = "0.1.0"
+description = "Experiments for client-assisted LLM inference."
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.ruff]
+line-length = 100
+

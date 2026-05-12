@@ -1,0 +1,11 @@
+LLM에서 speculative decoding이 뭔지 비전공자에게 설명해줘.
+한국어 이메일을 더 정중하게 다듬어줘: 내일까지 자료 보내주세요.
+Python으로 간단한 TODO CLI를 만들어줘.
+긴 회의록을 핵심 결정사항과 액션아이템으로 요약해줘.
+왜 기존 OpenAI API 위에서는 사용자 GPU로 비용 절감이 어려운지 설명해줘.
+로컬 GPU와 서버 GPU를 함께 쓰는 LLM 제품 아이디어의 리스크를 정리해줘.
+Qwen 3B와 Qwen 14B를 같이 쓰는 실험 설계를 제안해줘.
+아래 에러의 원인을 추측하고 해결 순서를 알려줘: CUDA out of memory.
+영어 문장을 자연스러운 한국어로 번역해줘: The client proposes draft tokens and the server verifies them.
+투자자에게 설명할 5문장짜리 제품 소개를 써줘.
+
